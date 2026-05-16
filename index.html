@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Conteneur principal -->
+    <div class="app-container">
+        
+        <!-- ========== SIDEBAR ========== -->
+        <aside class="sidebar">
+            <!-- Logo/Titre -->
+            <div class="sidebar-header">
+                <div class="logo">📚</div>
+                <h1>Study Hub</h1>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="courses">
+                    <span class="icon">📖</span>
+                    <span>Mes Cours</span>
+                </a>
+                <a href="#" class="nav-item" data-section="tasks">
+                    <span class="icon">✓</span>
+                    <span>Tâches</span>
+                </a>
+                <a href="#" class="nav-item" data-section="motivation">
+                    <span class="icon">⭐</span>
+                    <span>Motivation</span>
+                </a>
+            </nav>
+            
+            <!-- Bouton Dark/Light Mode -->
+            <button class="theme-toggle" id="themeToggle" title="Basculer le thème">
+                🌙
+            </button>
+        </aside>
+        
+        <!-- ========== CONTENU PRINCIPAL ========== -->
+        <main class="main-content">
+            <!-- Header avec titre -->
+            <div class="main-header">
+                <h2 id="page-title">Dashboard</h2>
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            
+            <!-- ========== SECTION DASHBOARD ========== -->
+            <section id="dashboard-section" class="section active">
+                <div class="section-content">
+                    <!-- Statistiques -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📚</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Cours</p>
+                                <p class="stat-value" id="totalCourses">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">✓</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Tâches Complétées</p>
+                                <p class="stat-value" id="completedTasks">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Progression Globale</p>
+                                <p class="stat-value" id="totalProgress">0%</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏳</div>
+                            <div class="stat-info">
+                                <p class="stat-label">Tâches En Attente</p>
+                                <p class="stat-value" id="pendingTasks">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Courbes rapides des cours -->
+                    <div class="courses-overview">
+                        <h3>Vue d'ensemble des cours</h3>
+                        <div id="coursesOverviewContainer" class="courses-overview-list">
+                            <p class="empty-state">Aucun cours pour le moment. Créez-en un dans "Mes Cours" ! 📖</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ========== SECTION MES COURS ========== -->
+            <section id="courses-section" class="section">
+                <div class="section-content">
+                    <!-- Bouton Ajouter Cours -->
+                    <div class="section-header">
+                        <h3>Mes Cours</h3>
+                        <button class="btn-primary" id="addCourseBtn">
+                            <span>+</span> Ajouter un cours
+                        </button>
+                    </div>
+                    
+                    <!-- Conteneur des cartes de cours -->
+                    <div id="coursesContainer" class="courses-grid">
+                        <p class="empty-state">Aucun cours pour le moment. Créez-en un ! 🎓</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ========== SECTION TÂCHES ========== -->
+            <section id="tasks-section" class="section">
+                <div class="section-content">
+                    <!-- Sélecteur de cours et filtres -->
+                    <div class="section-header">
+                        <div class="filters-group">
+                            <select id="courseFilter" class="filter-select">
+                                <option value="">Tous les cours</option>
+                            </select>
+                            
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="all">Toutes</button>
+                                <button class="filter-btn" data-filter="pending">En attente</button>
+                                <button class="filter-btn" data-filter="done">Complétées</button>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-primary" id="addTaskBtn">
+                            <span>+</span> Ajouter une tâche
+                        </button>
+                    </div>
+                    
+                    <!-- Conteneur des tâches -->
+                    <div id="tasksContainer" class="tasks-list">
+                        <p class="empty-state">Aucune tâche pour le moment. Commencez à en ajouter ! ✨</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ========== SECTION MOTIVATION ========== -->
+            <section id="motivation-section" class="section">
+                <div class="section-content">
+                    <h3>Citation Motivationnelle</h3>
+                    
+                    <!-- Carte de citation -->
+                    <div id="quoteCard" class="quote-card">
+                        <div class="quote-content">
+                            <p id="quoteText" class="quote-text">Chargement d'une citation inspirante...</p>
+                            <p id="quoteAuthor" class="quote-author">— Attente...</p>
+                        </div>
+                        <button class="btn-secondary" id="refreshQuoteBtn">
+                            ↻ Nouvelle citation
+                        </button>
+                    </div>
+                    
+                    <!-- Section conseils d'étude -->
+                    <div class="tips-section">
+                        <h3>Conseils pour mieux étudier</h3>
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <span class="tip-icon">🎯</span>
+                                <p><strong>Fixez des objectifs:</strong> Divisez vos études en petits objectifs réalisables.</p>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-icon">⏱️</span>
+                                <p><strong>Technique Pomodoro:</strong> Étudiez 25 min, puis prenez 5 min de pause.</p>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-icon">🏃</span>
+                                <p><strong>Restez actif:</strong> Prenez des pauses pour bouger et vous aérer.</p>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-icon">💧</span>
+                                <p><strong>Hydratez-vous:</strong> Buvez de l'eau régulièrement pour rester concentré.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- ========== MODALS ========== -->
+    
+    <!-- Modal Ajouter Cours -->
+    <div id="addCourseModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ajouter un nouveau cours</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="courseName">Nom du cours</label>
+                    <input type="text" id="courseName" placeholder="Ex: Mathématiques" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseColor">Couleur</label>
+                    <div class="color-picker">
+                        <input type="color" id="courseColor" value="#6366f1">
+                        <div class="color-preview" id="colorPreview" style="background-color: #6366f1;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-cancel">Annuler</button>
+                <button class="btn-primary" id="confirmAddCourse">Créer le cours</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Ajouter Tâche -->
+    <div id="addTaskModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ajouter une nouvelle tâche</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="taskCourse">Cours</label>
+                    <select id="taskCourse" required>
+                        <option value="">Sélectionner un cours</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskTitle">Titre de la tâche</label>
+                    <input type="text" id="taskTitle" placeholder="Ex: Exercices 1-5" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskDeadline">Date limite (optionnel)</label>
+                    <input type="date" id="taskDeadline">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-cancel">Annuler</button>
+                <button class="btn-primary" id="confirmAddTask">Ajouter la tâche</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
