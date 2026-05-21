@@ -105,11 +105,7 @@ Smart-Study-Dashboard/
 
 ### Méthode 2 : Avec un serveur local (Plus sûr)
 ```bash
-# Si vous avez Python
-cd Smart-Study-Dashboard
-python -m http.server 8000
-
-# Ou avec Node.js
+# avec Node.js
 npx serve
 ```
 
@@ -191,7 +187,7 @@ async function getData() {
 ```
 
 **Dans le projet:**
-- `loadMotivationalQuote()` : récupère une citation via l'API quotable.io
+- `loadMotivationalQuote()` : récupère une citation via l'API thequoteshub
 - Gestion d'erreur avec try/catch
 - Citation par défaut en cas d'erreur
 
@@ -382,7 +378,6 @@ Exemples :
 - ✅ Aucune dépendance externe (sauf API)
 - ✅ Chargement très rapide
 - ✅ Pas de serveur nécessaire
-- ✅ localStorage limité (~5MB), mais suffisant pour les données
 - ✅ Code minifiable pour production
 
 ---
@@ -395,7 +390,6 @@ Exemples :
 
 ### La citation ne charge pas
 - Vérifiez votre connexion Internet
-- L'API quotable.io peut être temporairement indisponible
 - Une citation par défaut s'affichera en cas d'erreur
 
 ### Le responsive ne fonctionne pas
@@ -409,35 +403,10 @@ Exemples :
 - **MDN Web Docs** : https://developer.mozilla.org/
 - **JavaScript.info** : https://javascript.info/
 - **Google Fonts** : https://fonts.google.com/
-- **API Quotable** : https://quotable.io/
+- **API thequoteshub** : [https://quotable.io/](https://thequoteshub.com/api/)
 
 ---
 
 ## 📝 Licence
 
 Ce projet est un travail universitaire. Libre d'utilisation et de modification.
-
----
-
-## 🙏 Remerciements
-
-Projet créé comme exercice pédagogique pour apprendre :
-- JavaScript Vanilla
-- Manipulation du DOM
-- localStorage
-- Fetch API
-- CSS Grid & Flexbox
-- Design Responsive
-
----
-
-## ✨ Bon apprentissage ! 📚
-
-N'hésitez pas à explorer le code, le modifier et ajouter vos propres fonctionnalités.
-
-**Prochaines étapes:**
-- [ ] Ajouter une page d'authentification
-- [ ] Intégrer une base de données (Firebase, Supabase)
-- [ ] Créer une API backend
-- [ ] Ajouter des tests automatisés
-- [ ] Publier en ligne (Netlify, Vercel)
