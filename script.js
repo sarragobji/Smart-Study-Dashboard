@@ -520,17 +520,19 @@ function updateCourseSelectors() {
  */
 async function loadMotivationalQuote() {
     try {
-        // Utilisation de l'API quotable.io qui ne nécessite pas d'authentification
-        const response = await fetch('https://api.quotable.io/random?minLength=100');
+        // Utilisation de l'API "thequoteshub" pour obtenir une citation aléatoire
+        const response = await fetch('https://thequoteshub.com/api/random-quote');
         
         if (!response.ok) {
             throw new Error('Erreur lors du chargement de la citation');
         }
         
         const data = await response.json();
+        const quoteText = data.text || data.content || data.quote || 'Citation indisponible';
+        const quoteAuthor = data.author || data.narrator || 'Auteur inconnu';
         
-        document.getElementById('quoteText').textContent = `"${data.content}"`;
-        document.getElementById('quoteAuthor').textContent = `— ${data.author}`;
+        document.getElementById('quoteText').textContent = `"${quoteText}"`;
+        document.getElementById('quoteAuthor').textContent = `— ${quoteAuthor}`;
         
     } catch (error) {
         // En cas d'erreur, afficher une citation par défaut
