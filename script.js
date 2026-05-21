@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Configurer les event listeners
     setupEventListeners();
     
-    // Rendre l'interface
-    renderDashboard();
+    // Rendre toute l'interface
+    updateUI();
     loadMotivationalQuote();
 });
 
@@ -51,6 +51,24 @@ function loadDataFromStorage() {
     if (storedTasks) {
         tasks = JSON.parse(storedTasks);
     }
+
+    normalizeStoredData();
+}
+
+/**
+ * Normalise les IDs sauvegardes pour garder les associations cours/taches.
+ */
+function normalizeStoredData() {
+    courses = courses.map(course => ({
+        ...course,
+        id: Number(course.id)
+    }));
+
+    tasks = tasks.map(task => ({
+        ...task,
+        id: Number(task.id),
+        courseId: Number(task.courseId)
+    }));
 }
 
 /**
@@ -165,12 +183,14 @@ function addCourse(name, color) {
  * Supprime un cours et ses tâches associées
  */
 function deleteCourse(courseId) {
+    const normalizedCourseId = Number(courseId);
+
     if (confirm('Êtes-vous sûr de vouloir supprimer ce cours ? Toutes ses tâches seront supprimées.')) {
         // Supprimer le cours
-        courses = courses.filter(course => course.id !== courseId);
+        courses = courses.filter(course => course.id !== normalizedCourseId);
         
         // Supprimer les tâches associées
-        tasks = tasks.filter(task => task.courseId !== courseId);
+        tasks = tasks.filter(task => task.courseId !== normalizedCourseId);
         
         saveCourses();
         saveTasks();
@@ -181,14 +201,16 @@ function deleteCourse(courseId) {
  * Obtient un cours par son ID
  */
 function getCourseById(courseId) {
-    return courses.find(course => course.id === courseId);
+    const normalizedCourseId = Number(courseId);
+    return courses.find(course => course.id === normalizedCourseId);
 }
 
 /**
  * Calcule le pourcentage de progression d'un cours
  */
 function getCoursProgress(courseId) {
-    const courseTasks = tasks.filter(task => task.courseId === courseId);
+    const normalizedCourseId = Number(courseId);
+    const courseTasks = tasks.filter(task => task.courseId === normalizedCourseId);
     
     if (courseTasks.length === 0) return 0;
     
@@ -202,7 +224,9 @@ function getCoursProgress(courseId) {
  * Ajoute une nouvelle tâche
  */
 function addTask(courseId, title, deadline) {
-    if (!courseId) {
+    const normalizedCourseId = Number(courseId);
+
+    if (!normalizedCourseId) {
         alert('Veuillez sélectionner un cours');
         return;
     }
@@ -214,7 +238,7 @@ function addTask(courseId, title, deadline) {
     
     const newTask = {
         id: Date.now(),
-        courseId: courseId,
+        courseId: normalizedCourseId,
         title: title,
         completed: false,
         deadline: deadline || null,
@@ -279,7 +303,7 @@ function getFilteredTasks() {
     
     // Filtre par cours
     if (currentCourseFilter) {
-        filtered = filtered.filter(task => task.courseId === parseInt(currentCourseFilter));
+        filtered = filtered.filter(task => task.courseId === Number(currentCourseFilter));
     }
     
     // Filtre par statut
@@ -369,6 +393,7 @@ function renderCoursesOverview() {
  */
 function renderCourses() {
     const container = document.getElementById('coursesContainer');
+    updateCourseSelectors();
     
     if (courses.length === 0) {
         container.innerHTML = '<p class="empty-state">Aucun cours pour le moment. Créez-en un ! 🎓</p>';
@@ -494,6 +519,7 @@ function updateCourseSelectors() {
     
     selectors.forEach(selector => {
         if (selector) {
+            const selectedValue = selector.value;
             // Garder l'option "Tous les cours" si elle existe
             const defaultOption = selector.querySelector('option[value=""]');
             
@@ -509,6 +535,10 @@ function updateCourseSelectors() {
                 option.textContent = course.name;
                 selector.appendChild(option);
             });
+
+            if ([...selector.options].some(option => option.value === selectedValue)) {
+                selector.value = selectedValue;
+            }
         }
     });
 }
